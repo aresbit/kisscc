@@ -5,12 +5,100 @@
 # License: MIT
 # Repository: https://github.com/0xkaz/claunch
 
-VERSION="0.0.1"
+VERSION="0.0.2"
 
 # === Handle version flag ===
 if [[ "$1" == "--version" ]] || [[ "$1" == "-v" ]]; then
   echo "claunch v$VERSION"
   exit 0
+fi
+
+# === Check for Claude CLI ===
+if ! command -v claude &> /dev/null; then
+  echo "❌ Claude CLI not found. Please install it first."
+  echo "   Visit: https://docs.anthropic.com/en/docs/claude-code" 
+  exit 1
+fi
+
+# === Function to create tmux config ===
+setup_tmux_config() {
+  local config_file="$1"
+  cat > "$config_file" << 'EOF'
+# Enable mouse support
+set -g mouse on
+
+# Fix mouse cursor display issues - comprehensive settings
+set -ga terminal-overrides ',*:Ss=\E[%p1%d q:Se=\E[2 q'
+set -ga terminal-overrides ',xterm*:Cr=\E]12;gray\007'
+set -ga terminal-overrides ',screen*:Cr=\E]12;gray\007'
+set -ga terminal-overrides ',tmux*:Cr=\E]12;gray\007'
+
+# Additional cursor fixes
+set -ga terminal-overrides ',*:Cs=\E[4 q:Ce=\E[2 q'
+set -as terminal-overrides ',*:Smulx=\E[4::%p1%dm'
+
+# Set proper TERM and ensure 256 colors
+set -g default-terminal "screen-256color"
+set -ga terminal-features "*:RGB"
+
+# Ensure proper cursor handling
+set -g focus-events on
+EOF
+}
+
+# === Handle commands ===
+case "$1" in
+  list)
+    echo "📋 Active Claude sessions:"
+    for session_file in ~/.claude_session_*; do
+      if [[ -f "$session_file" ]]; then
+        project=$(basename "$session_file" | sed 's/\.claude_session_//')
+        session_id=$(cat "$session_file" 2>/dev/null || echo "(empty)")
+        tmux_status=""
+        if tmux has-session -t "claude-$project" 2>/dev/null; then
+          tmux_status=" ✅ (tmux active)"
+        else
+          tmux_status=" ❌ (tmux inactive)"
+        fi
+        echo "  - $project: $session_id$tmux_status"
+      fi
+    done
+    exit 0
+    ;;
+  clean)
+    echo "🧹 Cleaning up old session files..."
+    removed_count=0
+    for session_file in ~/.claude_session_*; do
+      if [[ -f "$session_file" ]]; then
+        project=$(basename "$session_file" | sed 's/\.claude_session_//')
+        if ! tmux has-session -t "claude-$project" 2>/dev/null; then
+          echo "  Removing: $session_file"
+          rm -f "$session_file"
+          ((removed_count++))
+        fi
+      fi
+    done
+    echo "✅ Removed $removed_count session file(s)"
+    exit 0
+    ;;
+esac
+
+# === Show security warning on first use ===
+if [[ ! -f ~/.claunch_warning_acknowledged ]]; then
+  echo "⚠️  SECURITY WARNING"
+  echo ""
+  echo "claunch runs Claude with --dangerously-skip-permissions flag."
+  echo "This gives Claude FULL access to your file system without confirmation."
+  echo ""
+  echo "Only use in trusted project directories."
+  echo "Continue? (y/N): "
+  read -r response
+  if [[ "$response" != "y" && "$response" != "Y" ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+  touch ~/.claunch_warning_acknowledged
+  echo ""
 fi
 
 # === [0] check for tmux ===
@@ -51,12 +139,42 @@ if [ ! -f "$SESSION_FILE" ]; then
   echo "   echo \"sess-xxxxxxxx\" > $SESSION_FILE"
   echo ""
 
-  tmux new-session -As "claude-$PROJECT" \
+  # Create temporary tmux config for new sessions too
+  TMUX_CONF=$(mktemp)
+  setup_tmux_config "$TMUX_CONF"
+
+  tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
     "claude code --dangerously-skip-permissions"
+  
+  rm -f "$TMUX_CONF"
   exit 0
 fi
 
 # === [3] resume with session ID ===
-SESSION_ID=$(cat "$SESSION_FILE")
-tmux new-session -As "claude-$PROJECT" \
+SESSION_ID=$(cat "$SESSION_FILE" 2>/dev/null || echo "")
+
+# Validate session ID format
+if [[ -z "$SESSION_ID" ]]; then
+  echo "❌ Session file is empty: $SESSION_FILE"
+  echo "   Please save a valid session ID or delete the file to start fresh."
+  exit 1
+fi
+
+if [[ ! "$SESSION_ID" =~ ^sess-[a-zA-Z0-9]+$ ]]; then
+  echo "❌ Invalid session ID format: $SESSION_ID"
+  echo "   Expected format: sess-xxxxxxxx"
+  echo "   Delete $SESSION_FILE to start a new session."
+  exit 1
+fi
+
+# === Configure tmux for better mouse support ===
+# Create temporary tmux config
+TMUX_CONF=$(mktemp)
+setup_tmux_config "$TMUX_CONF"
+
+# Start tmux with custom config
+tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
   "claude code --resume $SESSION_ID --dangerously-skip-permissions"
+
+# Clean up temp file
+rm -f "$TMUX_CONF"

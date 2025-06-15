@@ -9,7 +9,7 @@
 - 🧠 Claude session management per project (automatic resume)
 - 🧰 Auto-installs tmux based on OS if not present
 - 💻 Supports macOS / Debian-based Linux
-- 🔐 Automatically includes `--dangerously-skip-permissions`
+- 🔐 Automatically includes `--dangerously-skip-permissions` flag
 - 🔄 Easy session ID storage and reuse
 
 ---
@@ -27,6 +27,19 @@ bash <(wget -qO- https://raw.githubusercontent.com/0xkaz/claunch/main/install.sh
 ```
 
 > **Note**: This will install `claunch` to `$HOME/bin/claunch`. Make sure `$HOME/bin` is in your PATH.
+
+---
+
+## ⚠️ Security Notice
+
+`claunch` automatically runs Claude CLI with the `--dangerously-skip-permissions` flag. This means:
+
+- **Claude will have full access to your file system** without asking for permissions
+- **All file read/write operations will be executed immediately** without confirmation
+- **Use with caution** and only in trusted project directories
+- **Not recommended for production environments** or sensitive data
+
+This flag is included for development convenience, allowing Claude to work efficiently without permission prompts. However, be aware of the security implications when using this tool.
 
 ---
 
@@ -84,6 +97,26 @@ Each project gets its own:
 - Sessions survive terminal closures
 - Reconnect anytime with `claunch`
 - Multiple projects can run simultaneously
+
+### tmux Operation Guide
+
+When running Claude through claunch, you're in a tmux session. Here are essential commands:
+
+- **Detach from session**: Press `Ctrl+B` then `D`
+  - This leaves Claude running in the background
+  - Return to your normal terminal
+- **Scroll up/down**: Press `Ctrl+B` then `[` to enter copy mode
+  - Use arrow keys or Page Up/Down to scroll
+  - Press `q` to exit copy mode
+- **Copy text**: In copy mode (`Ctrl+B` then `[`):
+  - Move cursor to start position
+  - Press `Space` to start selection
+  - Move to end position
+  - Press `Enter` to copy
+- **Paste text**: Press `Ctrl+B` then `]`
+- **Kill session**: Press `Ctrl+B` then `&` (use with caution)
+
+> **Tip**: You can also manually attach to sessions with `tmux attach -t claude-PROJECT_NAME`
 
 ---
 

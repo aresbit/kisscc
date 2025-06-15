@@ -3,13 +3,21 @@
 set -e
 
 INSTALL_DIR="$HOME/bin"
-SCRIPT_URL="https://raw.githubusercontent.com/0xkaz/claunch/main/bin/claunch"
+BASE_URL="https://raw.githubusercontent.com/0xkaz/claunch/main/bin"
 
 echo "📦 Installing claunch to $INSTALL_DIR..."
 
 mkdir -p "$INSTALL_DIR"
-curl -fsSL "$SCRIPT_URL" -o "$INSTALL_DIR/claunch"
+
+# Install main script
+curl -fsSL "$BASE_URL/claunch" -o "$INSTALL_DIR/claunch"
 chmod +x "$INSTALL_DIR/claunch"
+
+# Install typo handlers
+echo "🔧 Installing typo handlers..."
+for typo in clauch launch; do
+  curl -fsSL "$BASE_URL/$typo" -o "$INSTALL_DIR/$typo" 2>/dev/null && chmod +x "$INSTALL_DIR/$typo"
+done
 
 echo "✅ Installation complete: $INSTALL_DIR/claunch"
 

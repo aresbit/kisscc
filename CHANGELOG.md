@@ -5,7 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.1] - 2024-01-15
+## [0.0.2] - 2025-01-15
+
+### Added
+- Claude CLI existence check before execution
+- Session ID validation (must match sess-xxxxxxxx format)
+- Security warning prompt on first use
+- Session management commands:
+  - `claunch list` - List all active sessions
+  - `claunch clean` - Clean up orphaned session files
+- Typo handlers (clauch, launch) for common misspellings
+
+### Fixed
+- Duplicate tmux configuration code (now uses function)
+- Empty session file handling
+- Invalid session ID format handling
+
+### Security
+- Added warning about --dangerously-skip-permissions flag
+- User must acknowledge security implications on first use
+
+## [0.0.1] - 2025-01-15
 
 ### Added
 - Initial release of claunch
@@ -25,4 +45,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🔐 Automatically includes `--dangerously-skip-permissions`
 - 🔄 Easy session ID storage and reuse
 
+[0.0.2]: https://github.com/0xkaz/claunch/releases/tag/v0.0.2
 [0.0.1]: https://github.com/0xkaz/claunch/releases/tag/v0.0.1
