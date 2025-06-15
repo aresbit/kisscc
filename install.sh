@@ -17,46 +17,51 @@ echo "✅ Installation complete: $INSTALL_DIR/claunch"
 if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
   echo "🔧 Configuring PATH..."
   
-  # Detect shell and config file
-  if [[ -n "$ZSH_VERSION" ]]; then
-    SHELL_RC="$HOME/.zshrc"
-  elif [[ -n "$BASH_VERSION" ]]; then
-    if [[ -f "$HOME/.bashrc" ]]; then
-      SHELL_RC="$HOME/.bashrc"
-    else
-      SHELL_RC="$HOME/.bash_profile"
+  # Function to add PATH to a shell config file
+  add_to_path() {
+    local config_file="$1"
+    if [[ -f "$config_file" ]] || [[ "$config_file" == *".zshrc" ]] || [[ "$config_file" == *".bashrc" ]] || [[ "$config_file" == *".bash_profile" ]]; then
+      if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$config_file" 2>/dev/null; then
+        echo '' >> "$config_file"
+        echo '# Added by claunch installer' >> "$config_file"
+        echo 'export PATH="$HOME/bin:$PATH"' >> "$config_file"
+        echo "✅ Added PATH to $config_file"
+        return 0
+      else
+        echo "✅ PATH already configured in $config_file"
+        return 1
+      fi
     fi
-  else
-    # Try to detect from SHELL variable
-    case "$SHELL" in
-      */zsh)
-        SHELL_RC="$HOME/.zshrc"
-        ;;
-      */bash)
-        if [[ -f "$HOME/.bashrc" ]]; then
-          SHELL_RC="$HOME/.bashrc"
-        else
-          SHELL_RC="$HOME/.bash_profile"
-        fi
-        ;;
-      *)
-        echo "⚠️ Could not detect shell type. Please manually add to your shell config:"
-        echo 'export PATH="$HOME/bin:$PATH"'
-        exit 0
-        ;;
-    esac
+    return 2
+  }
+  
+  # Add to common shell config files
+  local added=false
+  
+  # Add to zsh config
+  if add_to_path "$HOME/.zshrc"; then
+    added=true
   fi
   
-  # Add PATH export if not already present
-  if ! grep -q 'export PATH="$HOME/bin:$PATH"' "$SHELL_RC" 2>/dev/null; then
-    echo '' >> "$SHELL_RC"
-    echo '# Added by claunch installer' >> "$SHELL_RC"
-    echo 'export PATH="$HOME/bin:$PATH"' >> "$SHELL_RC"
-    echo "✅ Added PATH to $SHELL_RC"
-    echo "🔄 Please run: source $SHELL_RC"
-    echo "   Or start a new terminal session"
+  # Add to bash config
+  if [[ -f "$HOME/.bashrc" ]]; then
+    if add_to_path "$HOME/.bashrc"; then
+      added=true
+    fi
   else
-    echo "✅ PATH already configured in $SHELL_RC"
+    if add_to_path "$HOME/.bash_profile"; then
+      added=true
+    fi
+  fi
+  
+  if [[ "$added" == true ]]; then
+    echo ""
+    echo "🔄 To use claunch immediately, run one of:"
+    echo "   source ~/.zshrc     (for zsh)"
+    echo "   source ~/.bashrc    (for bash)"
+    echo "   source ~/.bash_profile (for bash)"
+    echo ""
+    echo "Or start a new terminal session"
   fi
 else
   echo "✅ $INSTALL_DIR is already in PATH"
