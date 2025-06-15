@@ -36,7 +36,7 @@ if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then
   }
   
   # Add to common shell config files
-  local added=false
+  added=false
   
   # Add to zsh config
   if add_to_path "$HOME/.zshrc"; then
