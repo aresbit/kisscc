@@ -1,0 +1,62 @@
+#!/bin/bash
+
+# claunch - Claude CLI session manager with tmux
+# Version: 0.0.1
+# License: MIT
+# Repository: https://github.com/0xkaz/claunch
+
+VERSION="0.0.1"
+
+# === Handle version flag ===
+if [[ "$1" == "--version" ]] || [[ "$1" == "-v" ]]; then
+  echo "claunch v$VERSION"
+  exit 0
+fi
+
+# === [0] check for tmux ===
+if ! command -v tmux &> /dev/null; then
+  echo "🛠 tmux not found. Attempting to install..."
+
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    if command -v brew &> /dev/null; then
+      echo "🍺 Installing tmux via Homebrew..."
+      brew install tmux || { echo "❌ Failed to install via Homebrew"; exit 1; }
+    else
+      echo "❌ Homebrew is not installed. Please install brew first."
+      echo "Official page: https://brew.sh/"
+      exit 1
+    fi
+
+  elif [[ -f /etc/debian_version ]]; then
+    echo "📦 Installing tmux via apt..."
+    sudo apt update && sudo apt install -y tmux || { echo "❌ Failed to install via apt"; exit 1; }
+
+  else
+    echo "❌ Unable to auto-install tmux on your system."
+    echo "Please install manually: https://github.com/tmux/tmux"
+    exit 1
+  fi
+fi
+
+# === [1] define project/session ===
+PROJECT=$(basename "$PWD")
+SESSION_FILE="$HOME/.claude_session_${PROJECT}"
+
+# === [2] check for session file ===
+if [ ! -f "$SESSION_FILE" ]; then
+  echo "📁 Session ID file not found: $SESSION_FILE"
+  echo "🆕 Starting new Claude session (using --dangerously-skip-permissions)"
+  echo "   Find the session ID in Claude's output and save it with:"
+  echo ""
+  echo "   echo \"sess-xxxxxxxx\" > $SESSION_FILE"
+  echo ""
+
+  tmux new-session -As "claude-$PROJECT" \
+    "claude code --dangerously-skip-permissions"
+  exit 0
+fi
+
+# === [3] resume with session ID ===
+SESSION_ID=$(cat "$SESSION_FILE")
+tmux new-session -As "claude-$PROJECT" \
+  "claude code --resume $SESSION_ID --dangerously-skip-permissions"

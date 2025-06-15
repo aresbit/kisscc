@@ -1,0 +1,32 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor directories and files
+.idea
+.vscode
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# Session files (user specific)
+.claude_session_*
+
+# Backup files
+*.bak
+*.backup
+
+# Test coverage
+coverage/
+*.lcov
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
