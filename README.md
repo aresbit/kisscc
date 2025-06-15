@@ -1,5 +1,7 @@
 # claunch 🧠🚀
 
+![claunch](claunch-banner.png)
+
 [![ja](https://img.shields.io/badge/lang-ja-green.svg)](README.ja.md)
 
 > A lightweight session manager for efficiently managing Claude CLI across multiple projects
