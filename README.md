@@ -2,12 +2,13 @@
 
 [![ja](https://img.shields.io/badge/lang-ja-green.svg)](README.ja.md)
 
-> A tmux wrapper tool for efficiently managing Claude CLI across multiple projects
+> A lightweight session manager for efficiently managing Claude CLI across multiple projects
 
-`claunch` is a development support tool that separates Claude sessions by project and enables persistent interaction on tmux.
+`claunch` is a development support tool that separates Claude sessions by project with optional tmux support for persistent interaction.
 
 - 🧠 Claude session management per project (automatic resume)
-- 🧰 Auto-installs tmux based on OS if not present
+- ⚡ Lightweight direct execution by default
+- 🧰 Optional tmux support for persistent sessions
 - 💻 Supports macOS / Debian-based Linux
 - 🔐 Automatically includes `--dangerously-skip-permissions` flag
 - 🔄 Easy session ID storage and reuse
@@ -50,13 +51,19 @@ This flag is included for development convenience, allowing Claude to work effic
 Navigate to your project directory and run:
 
 ```bash
-claunch
+claunch        # Start direct Claude session (default)
+claunch --tmux # Start with tmux for persistent sessions
 ```
 
 On first run, it will:
-- Install tmux automatically if not present
+- Install tmux automatically if not present (tmux mode only)
 - Start a new Claude session
 - Display the session ID to save
+
+#### Direct Mode vs tmux Mode
+
+- **Direct mode** (default): Lightweight, no tmux dependency, direct Claude interaction
+- **tmux mode** (`--tmux`): Persistent sessions, background execution, scroll history
 
 ### 2. Save the session ID
 
@@ -68,18 +75,26 @@ echo "sess-xxxxxxxx" > ~/.claude_session_PROJECT_NAME
 
 ### 3. Resume an existing session
 
-Just run `claunch` again in the same project directory. It will automatically:
+Just run `claunch` (or `claunch --tmux`) again in the same project directory. It will automatically:
 - Detect the saved session ID
 - Resume your previous Claude conversation
 - Maintain all context from before
+
+### 4. Additional Commands
+
+```bash
+claunch list     # List all active sessions
+claunch clean    # Clean up orphaned session files
+claunch --help   # Show help and options
+```
 
 ---
 
 ## 🛠 Features
 
-### Auto tmux Installation
+### Auto tmux Installation (when using --tmux)
 
-`claunch` automatically detects and installs tmux if not present:
+`claunch` automatically detects and installs tmux if not present when using `--tmux` option:
 
 - **macOS**: Uses Homebrew (`brew install tmux`)
 - **Debian/Ubuntu**: Uses apt (`sudo apt install tmux`)
@@ -88,19 +103,20 @@ Just run `claunch` again in the same project directory. It will automatically:
 ### Project-based Session Management
 
 Each project gets its own:
-- tmux session named `claude-PROJECT_NAME`
 - Session ID file at `~/.claude_session_PROJECT_NAME`
 - Isolated Claude conversation context
+- Optional tmux session named `claude-PROJECT_NAME` (with `--tmux`)
 
-### Persistent Sessions
+### Persistent Sessions (tmux mode)
 
+With `claunch --tmux`:
 - Sessions survive terminal closures
-- Reconnect anytime with `claunch`
-- Multiple projects can run simultaneously
+- Reconnect anytime with `claunch --tmux`
+- Multiple projects can run simultaneously in background
 
 ### tmux Operation Guide
 
-When running Claude through claunch, you're in a tmux session. Here are essential commands:
+When running Claude through `claunch --tmux`, you're in a tmux session. Here are essential commands:
 
 - **Detach from session**: Press `Ctrl+B` then `D`
   - This leaves Claude running in the background

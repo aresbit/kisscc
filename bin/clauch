@@ -1,3 +1,0 @@
-#!/bin/bash
-# Typo handler for claunch
-exec "$HOME/bin/claunch" "$@"

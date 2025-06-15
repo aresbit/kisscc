@@ -13,12 +13,6 @@ mkdir -p "$INSTALL_DIR"
 curl -fsSL "$BASE_URL/claunch" -o "$INSTALL_DIR/claunch"
 chmod +x "$INSTALL_DIR/claunch"
 
-# Install typo handlers
-echo "🔧 Installing typo handlers..."
-for typo in clauch launch; do
-  curl -fsSL "$BASE_URL/$typo" -o "$INSTALL_DIR/$typo" 2>/dev/null && chmod +x "$INSTALL_DIR/$typo"
-done
-
 echo "✅ Installation complete: $INSTALL_DIR/claunch"
 
 # Configure PATH if needed

@@ -2,12 +2,13 @@
 
 [![en](https://img.shields.io/badge/lang-en-blue.svg)](README.md)
 
-> Claude CLI を複数プロジェクトで効率的に扱うための tmux ラッパーツール
+> Claude CLI を複数プロジェクトで効率的に管理する軽量セッションマネージャー
 
-`claunch` は、各プロジェクトごとに Claude のセッションを切り分け、tmux 上で永続的に対話できる開発支援ツールです。
+`claunch` は、各プロジェクトごとに Claude のセッションを切り分け、オプションで tmux サポートを提供する開発支援ツールです。
 
 - 🧠 プロジェクトごとの Claude セッション管理（自動 resume）
-- 🧰 tmux が未インストールでも OS に応じて自動インストール
+- ⚡ デフォルトで軽量な直接実行
+- 🧰 永続セッションのためのオプションル tmux サポート
 - 💻 macOS / Debian 系 Linux 対応
 - 🔐 `--dangerously-skip-permissions` フラグを自動付与
 - 🔄 セッションIDの保存・再利用が簡単
@@ -50,13 +51,19 @@ bash <(wget -qO- https://raw.githubusercontent.com/0xkaz/claunch/main/install.sh
 プロジェクトディレクトリに移動して実行:
 
 ```bash
-claunch
+claunch        # 直接 Claude セッション（デフォルト）
+claunch --tmux # 永続セッションのために tmux を使用
 ```
 
 初回実行時:
-- tmux が自動的にインストールされます（未インストールの場合）
+- tmux が自動的にインストールされます（tmuxモードのみ、未インストールの場合）
 - 新しい Claude セッションが開始されます
 - 保存すべきセッション ID が表示されます
+
+#### 直接モード vs tmuxモード
+
+- **直接モード**（デフォルト）: 軽量、tmux依存なし、直接Claude対話
+- **tmuxモード**（`--tmux`）: 永続セッション、バックグラウンド実行、スクロール履歴
 
 ### 2. セッション ID を保存
 
@@ -68,18 +75,26 @@ echo "sess-xxxxxxxx" > ~/.claude_session_プロジェクト名
 
 ### 3. 既存セッションを再開
 
-同じプロジェクトディレクトリで再度 `claunch` を実行するだけです。自動的に:
+同じプロジェクトディレクトリで再度 `claunch`（または `claunch --tmux`）を実行するだけです。自動的に:
 - 保存されたセッション ID を検出
 - 前回の Claude 会話を再開
 - すべてのコンテキストを維持
+
+### 4. 追加コマンド
+
+```bash
+claunch list     # すべてのアクティブセッション一覧
+claunch clean    # 孤立したセッションファイルをクリーンアップ
+claunch --help   # ヘルプとオプションを表示
+```
 
 ---
 
 ## 🛠 機能
 
-### tmux 自動インストール
+### tmux 自動インストール（--tmux 使用時）
 
-`claunch` は tmux が存在しない場合、自動的に検出してインストール:
+`claunch` は `--tmux` オプション使用時に tmux が存在しない場合、自動的に検出してインストール:
 
 - **macOS**: Homebrew を使用（`brew install tmux`）
 - **Debian/Ubuntu**: apt を使用（`sudo apt install tmux`）
@@ -88,19 +103,20 @@ echo "sess-xxxxxxxx" > ~/.claude_session_プロジェクト名
 ### プロジェクトベースのセッション管理
 
 各プロジェクトは独自の:
-- `claude-プロジェクト名` という名前の tmux セッション
 - `~/.claude_session_プロジェクト名` のセッション ID ファイル
 - 隔離された Claude 会話コンテキスト
+- オプションで `claude-プロジェクト名` という名前の tmux セッション（`--tmux` 使用時）
 
-### 永続的セッション
+### 永続的セッション（tmuxモード）
 
+`claunch --tmux` で:
 - ターミナルを閉じてもセッションは維持
-- いつでも `claunch` で再接続可能
-- 複数のプロジェクトを同時に実行可能
+- いつでも `claunch --tmux` で再接続可能
+- 複数のプロジェクトをバックグラウンドで同時実行可能
 
 ### tmux 操作ガイド
 
-claunch 経由で Claude を実行すると、tmux セッション内にいます。重要なコマンド：
+`claunch --tmux` 経由で Claude を実行すると、tmux セッション内にいます。重要なコマンド：
 
 - **セッションからデタッチ**: `Ctrl+B` を押してから `D` を押す
   - Claude をバックグラウンドで実行したまま
