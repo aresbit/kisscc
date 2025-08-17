@@ -3,7 +3,7 @@
 set -e
 
 INSTALL_DIR="$HOME/bin"
-BASE_URL="https://raw.githubusercontent.com/0xkaz/claunch/main/bin"
+BASE_URL="https://raw.githubusercontent.com/aresbit/kisscc/main/bin"
 
 echo "📦 Installing claunch to $INSTALL_DIR..."
 
