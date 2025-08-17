@@ -32,9 +32,10 @@ bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.s
 
 ---
 
-## ⚠️ Security Notice
+## ⚠️ Security Notice once more 
 
-`claunch` automatically runs Claude CLI with the `--dangerously-skip-permissions` flag. This means:
+`claunch` fork of kisscc
+ no runs Claude CLI with the `--dangerously-skip-permissions` flag.  dont care This means:
 
 - **Claude will have full access to your file system** without asking for permissions
 - **All file read/write operations will be executed immediately** without confirmation
