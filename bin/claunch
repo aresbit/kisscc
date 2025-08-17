@@ -22,10 +22,10 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --help|-h)
-      echo "claunch v$VERSION - Claude CLI session manager"
+      echo "claunch v$VERSION - kimicc session manager"
       echo ""
       echo "Usage:"
-      echo "  claunch [options]           Start or resume Claude session"
+      echo "  claunch [options]           Start or resume kimicc session"
       echo "  claunch list               List all sessions"
       echo "  claunch clean              Clean up orphaned session files"
       echo ""
@@ -35,7 +35,7 @@ while [[ $# -gt 0 ]]; do
       echo "  --help, -h                 Show this help"
       echo ""
       echo "Examples:"
-      echo "  claunch                    Start direct Claude session (default)"
+      echo "  claunch                    Start direct kimicc session (default)"
       echo "  claunch --tmux             Start tmux-based session"
       echo "  claunch list               List active sessions"
       exit 0
@@ -50,10 +50,17 @@ done
 # Restore positional parameters
 set -- "${ARGS[@]}"
 
-# === Check for Claude CLI ===
-if ! command -v claude &> /dev/null; then
-  echo "❌ Claude CLI not found. Please install it first."
-  echo "   Visit: https://docs.anthropic.com/en/docs/claude-code" 
+# === Check for kimicc via npx ===
+if ! npx --version &> /dev/null; then
+  echo "❌ npx not found. Please install Node.js/npm first."
+  echo "   Visit: https://nodejs.org/" 
+  exit 1
+fi
+
+# Test if kimicc is available via npx
+if ! npx kimicc --version &> /dev/null; then
+  echo "❌ kimicc not found via npx. Please install it first."
+  echo "   Run: npm install -g kimicc"
   exit 1
 fi
 
@@ -86,7 +93,7 @@ EOF
 # === Handle commands ===
 case "$1" in
   list)
-    echo "📋 Active Claude sessions:"
+    echo "📋 Active kimicc sessions:"
     for session_file in ~/.claude_session_*; do
       if [[ -f "$session_file" ]]; then
         project=$(basename "$session_file" | sed 's/\.claude_session_//')
@@ -120,20 +127,15 @@ case "$1" in
     ;;
 esac
 
-# === Show security warning on first use ===
+# === Show info on first use ===
 if [[ ! -f ~/.claunch_warning_acknowledged ]]; then
-  echo "⚠️  SECURITY WARNING"
+  echo "ℹ️  claunch info"
   echo ""
-  echo "claunch runs Claude with --dangerously-skip-permissions flag."
-  echo "This gives Claude FULL access to your file system without confirmation."
+  echo "claunch now uses npx kimicc instead of Claude CLI."
+  echo "Make sure kimicc is installed: npm install -g kimicc"
   echo ""
-  echo "Only use in trusted project directories."
-  echo "Continue? (y/N): "
+  echo "Press any key to continue..."
   read -r response
-  if [[ "$response" != "y" && "$response" != "Y" ]]; then
-    echo "Aborted."
-    exit 1
-  fi
   touch ~/.claunch_warning_acknowledged
   echo ""
 fi
@@ -170,7 +172,7 @@ SESSION_FILE="$HOME/.claude_session_${PROJECT}"
 # === [2] check for session file ===
 if [ ! -f "$SESSION_FILE" ]; then
   echo "📁 Session ID file not found: $SESSION_FILE"
-  echo "🆕 Starting new Claude session (using --dangerously-skip-permissions)"
+  echo "🆕 Starting new kimicc session"
   
   if $USE_TMUX; then
     echo "   Find the session ID in Claude's output and save it with:"
@@ -183,16 +185,16 @@ if [ ! -f "$SESSION_FILE" ]; then
     setup_tmux_config "$TMUX_CONF"
 
     tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
-      "claude code --dangerously-skip-permissions"
+      "npx kimicc"
     
     rm -f "$TMUX_CONF"
   else
-    echo "   Running Claude directly."
+    echo "   Running kimicc directly."
     echo "   Find the session ID in Claude's output and save it with:"
     echo ""
     echo "   echo \"sess-xxxxxxxx\" > $SESSION_FILE"
     echo ""
-    exec claude code --dangerously-skip-permissions
+    exec npx kimicc
   fi
   exit 0
 fi
@@ -223,11 +225,11 @@ if $USE_TMUX; then
 
   # Start tmux with custom config
   tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
-    "claude code --resume $SESSION_ID --dangerously-skip-permissions"
+    "npx kimicc --resume $SESSION_ID"
 
   # Clean up temp file
   rm -f "$TMUX_CONF"
 else
-  echo "🔄 Resuming Claude session: $SESSION_ID"
-  exec claude code --resume "$SESSION_ID" --dangerously-skip-permissions
+  echo "🔄 Resuming kimicc session: $SESSION_ID"
+  exec npx kimicc --resume "$SESSION_ID"
 fi
