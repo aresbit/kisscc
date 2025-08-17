@@ -2,9 +2,9 @@
 
 ![claunch](claunch-banner.png)
 
-[![ja](https://img.shields.io/badge/lang-ja-green.svg)](README.ja.md)
+[![zh](https://img.shields.io/badge/lang-zh-red.svg)](README.zh.md)
 
-> A lightweight session manager for efficiently managing Claude CLI across multiple projects
+> A lightweight session manager for efficiently managing kimicc across multiple projects
 
 `claunch` is a development support tool that separates Claude sessions by project with optional tmux support for persistent interaction.
 
@@ -12,7 +12,6 @@
 - ⚡ Lightweight direct execution by default
 - 🧰 Optional tmux support for persistent sessions
 - 💻 Supports macOS / Debian-based Linux
-- 🔐 Automatically includes `--dangerously-skip-permissions` flag
 - 🔄 Easy session ID storage and reuse
 
 ---
@@ -20,13 +19,13 @@
 ## 🚀 Installation (One-liner)
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/0xkaz/claunch/main/install.sh)
+bash <(curl -s https://raw.githubusercontent.com/aresbit/kisscc/main/install.sh)
 ```
 
 Or with wget:
 
 ```bash
-bash <(wget -qO- https://raw.githubusercontent.com/0xkaz/claunch/main/install.sh)
+bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.sh)
 ```
 
 > **Note**: This will install `claunch` to `$HOME/bin/claunch`. Make sure `$HOME/bin` is in your PATH.
@@ -140,7 +139,7 @@ When running Claude through `claunch --tmux`, you're in a tmux session. Here are
 
 ## 📝 Requirements
 
-- Claude CLI (`claude` command)
+- Node.js/npm and kimicc (`npm install -g kimicc`)
 - tmux (auto-installed if missing)
 - macOS or Debian-based Linux
 - curl or wget for installation
