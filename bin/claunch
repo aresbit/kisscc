@@ -58,7 +58,7 @@ if ! npx --version &> /dev/null; then
 fi
 
 # Test if kimicc is available via npx
-if ! npx kimicc --version &> /dev/null; then
+if ! kimicc --version &> /dev/null; then
   echo "❌ kimicc not found via npx. Please install it first."
   echo "   Run: npm install -g kimicc"
   exit 1
@@ -185,7 +185,7 @@ if [ ! -f "$SESSION_FILE" ]; then
     setup_tmux_config "$TMUX_CONF"
 
     tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
-      "npx kimicc 'Hello, please start a new session.'"
+      "npx kimicc 'Hello Claude'"
     
     rm -f "$TMUX_CONF"
   else
@@ -194,7 +194,7 @@ if [ ! -f "$SESSION_FILE" ]; then
     echo ""
     echo "   echo \"sess-xxxxxxxx\" > $SESSION_FILE"
     echo ""
-    exec npx kimicc "Hello, please start a new session."
+    exec npx kimicc "Hello Claude"
   fi
   exit 0
 fi
