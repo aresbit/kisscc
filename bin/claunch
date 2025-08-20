@@ -194,7 +194,7 @@ if [ ! -f "$SESSION_FILE" ]; then
     echo ""
     echo "   echo \"sess-xxxxxxxx\" > $SESSION_FILE"
     echo ""
-    exec npx kimicc "Hello Claude"
+    exec npx kimicc -- "hello Claude"
   fi
   exit 0
 fi
