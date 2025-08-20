@@ -58,7 +58,7 @@ if ! npx --version &> /dev/null; then
 fi
 
 # Test if kimicc is available via npx
-if ! kimicc --version &> /dev/null; then
+if ! npx kimicc --version &> /dev/null; then
   echo "❌ kimicc not found via npx. Please install it first."
   echo "   Run: npm install -g kimicc"
   exit 1
