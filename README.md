@@ -55,7 +55,7 @@ add all so to your .zshrc.
 ## ⚠️ Security Notice once more 
 
 `claunch` fork of kisscc
- no runs Claude CLI with the `--dangerously-skip-permissions` flag.  dont care This means:
+ do not runs Claude CLI with the `--dangerously-skip-permissions` flag.  dont care this:
 
 - **Claude will have full access to your file system** without asking for permissions
 - **All file read/write operations will be executed immediately** without confirmation
