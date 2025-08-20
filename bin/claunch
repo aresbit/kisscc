@@ -185,7 +185,7 @@ if [ ! -f "$SESSION_FILE" ]; then
     setup_tmux_config "$TMUX_CONF"
 
     tmux -f "$TMUX_CONF" new-session -As "claude-$PROJECT" \
-      "npx kimicc 'Hello\ Claude'"
+      "npx kimicc '"hello Claude"'"
     
     rm -f "$TMUX_CONF"
   else
