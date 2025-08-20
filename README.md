@@ -13,6 +13,10 @@
 - 🧰 Optional tmux support for persistent sessions
 - 💻 Supports macOS / Debian-based Linux
 - 🔄 Easy session ID storage and reuse
+```bash
+ echo "sess-xxxxxxxx" > /home/yangpt/.claude_session_kisscc
+
+```
 
 ---
 
