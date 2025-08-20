@@ -36,6 +36,22 @@ bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.s
 
 ---
 
+## ⚠️ Linux Notice
+```bash
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+export PATH=~/.npm-global/bin:$PATH
+npm install -g @anthropic-ai/claude-code
+```
+Remember to add export PATH=~/.npm-global/bin:$PATH to your .bashrc or .zshrc file
+## ⚠️ termux Notice
+```bash
+mkdir ~/.npm-global
+npm config set prefix '/data/data/com.termux/files/home/.npm-global'
+export PATH=/data/data/com.termux/files/home/.npm-global/bin:$PATH
+```
+add all so to your .zshrc.
+
 ## ⚠️ Security Notice once more 
 
 `claunch` fork of kisscc
