@@ -5,15 +5,15 @@ set -e
 INSTALL_DIR="$HOME/bin"
 BASE_URL="https://raw.githubusercontent.com/aresbit/kisscc/main/bin"
 
-echo "📦 Installing claunch to $INSTALL_DIR..."
+echo "📦 Installing kisscc to $INSTALL_DIR..."
 
 mkdir -p "$INSTALL_DIR"
 
 # Install main script
-curl -fsSL "$BASE_URL/claunch" -o "$INSTALL_DIR/claunch"
-chmod +x "$INSTALL_DIR/claunch"
+curl -fsSL "$BASE_URL/kisscc" -o "$INSTALL_DIR/kisscc"
+chmod +x "$INSTALL_DIR/kisscc"
 
-echo "✅ Installation complete: $INSTALL_DIR/claunch"
+echo "✅ Installation complete: $INSTALL_DIR/kisscc"
 
 # Configure PATH if needed
 if [[ ":$PATH:" != *":$INSTALL_DIR:"* ]]; then

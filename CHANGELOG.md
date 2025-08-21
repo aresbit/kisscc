@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for lightweight mode without tmux dependency
 
 ### Removed
-- Typo handlers (clauch, launch) - keeping it simple with just claunch
+- Typo handlers (clauch, launch) - keeping it simple with just kisscc
 
 ### Changed
 - Improved command-line argument parsing
@@ -37,8 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Session ID validation (must match sess-xxxxxxxx format)
 - Security warning prompt on first use
 - Session management commands:
-  - `claunch list` - List all active sessions
-  - `claunch clean` - Clean up orphaned session files
+  - `kisscc list` - List all active sessions
+  - `kisscc clean` - Clean up orphaned session files
 - Typo handlers (clauch, launch) for common misspellings (removed in v0.0.3)
 
 ### Fixed
@@ -53,7 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.1] - 2025-01-15
 
 ### Added
-- Initial release of claunch
+- Initial release of kisscc
 - Core functionality to manage Claude CLI sessions with tmux
 - Automatic tmux installation for macOS (Homebrew) and Debian-based Linux (apt)
 - Per-project session management with automatic resume capability
@@ -70,7 +70,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 🔐 Automatically includes `--dangerously-skip-permissions`
 - 🔄 Easy session ID storage and reuse
 
-[0.0.4]: https://github.com/0xkaz/claunch/releases/tag/v0.0.4
-[0.0.3]: https://github.com/0xkaz/claunch/releases/tag/v0.0.3
-[0.0.2]: https://github.com/0xkaz/claunch/releases/tag/v0.0.2
-[0.0.1]: https://github.com/0xkaz/claunch/releases/tag/v0.0.1
+[0.0.4]: https://github.com/aresbit/kisscc/releases/tag/v0.0.4
+[0.0.3]: https://github.com/aresbit/kisscc/releases/tag/v0.0.3
+[0.0.2]: https://github.com/aresbit/kisscc/releases/tag/v0.0.2
+[0.0.1]: https://github.com/aresbit/kisscc/releases/tag/v0.0.1

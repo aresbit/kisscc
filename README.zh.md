@@ -1,4 +1,4 @@
-# claunch 🧠🚀
+# kisscc 🧠🚀
 
 ![claunch](claunch-banner.png)
 
@@ -6,7 +6,7 @@
 
 > 轻量级会话管理器，高效管理多个项目的 kimicc
 
-`claunch` 是一个开发支持工具，可以按项目分离 kimicc 会话，并提供可选的 tmux 支持以实现持久交互。
+`kisscc` 是一个开发支持工具，可以按项目分离 kimicc 会话，并提供可选的 tmux 支持以实现持久交互。
 
 - 🧠 按项目进行 kimicc 会话管理（自动恢复）
 - ⚡ 默认轻量级直接执行
@@ -28,7 +28,7 @@ bash <(curl -s https://raw.githubusercontent.com/aresbit/kisscc/main/install.sh)
 bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.sh)
 ```
 
-> **注意**：这将把 `claunch` 安装到 `$HOME/bin/claunch`。请确保 `$HOME/bin` 在您的 PATH 中。
+> **注意**：这将把 `kisscc` 安装到 `$HOME/bin/kisscc`。请确保 `$HOME/bin` 在您的 PATH 中。
 
 ---
 
@@ -39,8 +39,8 @@ bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.s
 导航到您的项目目录并运行：
 
 ```bash
-claunch        # 启动直接 kimicc 会话（默认）
-claunch --tmux # 使用 tmux 启动持久会话
+kisscc        # 启动直接 kimicc 会话（默认）
+kisscc --tmux # 使用 tmux 启动持久会话
 ```
 
 首次运行时：

@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# claunch - Claude CLI session manager with tmux
+# kisscc - Claude CLI session manager with tmux
 # Version: 0.0.1
 # License: MIT
-# Repository: https://github.com/0xkaz/claunch
+# Repository: https://github.com/aresbit/kisscc
 
 VERSION="0.0.4"
 
@@ -14,7 +14,7 @@ ARGS=()
 while [[ $# -gt 0 ]]; do
   case $1 in
     --version|-v)
-      echo "claunch v$VERSION"
+      echo "kisscc v$VERSION"
       exit 0
       ;;
     --tmux)
@@ -22,12 +22,12 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --help|-h)
-      echo "claunch v$VERSION - kimicc session manager"
+      echo "kisscc v$VERSION - kimicc session manager"
       echo ""
       echo "Usage:"
-      echo "  claunch [options]           Start or resume kimicc session"
-      echo "  claunch list               List all sessions"
-      echo "  claunch clean              Clean up orphaned session files"
+      echo "  kisscc [options]           Start or resume kimicc session"
+      echo "  kisscc list               List all sessions"
+      echo "  kisscc clean              Clean up orphaned session files"
       echo ""
       echo "Options:"
       echo "  --tmux                     Run with tmux (persistent sessions)"
@@ -35,9 +35,9 @@ while [[ $# -gt 0 ]]; do
       echo "  --help, -h                 Show this help"
       echo ""
       echo "Examples:"
-      echo "  claunch                    Start direct kimicc session (default)"
-      echo "  claunch --tmux             Start tmux-based session"
-      echo "  claunch list               List active sessions"
+      echo "  kisscc                    Start direct kimicc session (default)"
+      echo "  kisscc --tmux             Start tmux-based session"
+      echo "  kisscc list               List active sessions"
       exit 0
       ;;
     *)
@@ -128,15 +128,15 @@ case "$1" in
 esac
 
 # === Show info on first use ===
-if [[ ! -f ~/.claunch_warning_acknowledged ]]; then
-  echo "ℹ️  claunch info"
+if [[ ! -f ~/.kisscc_warning_acknowledged ]]; then
+  echo "ℹ️  kisscc info"
   echo ""
-  echo "claunch now uses npx kimicc instead of Claude CLI."
+  echo "kisscc now uses npx kimicc instead of Claude CLI."
   echo "Make sure kimicc is installed: npm install -g kimicc"
   echo ""
   echo "Press any key to continue..."
   read -r response
-  touch ~/.claunch_warning_acknowledged
+  touch ~/.kisscc_warning_acknowledged
   echo ""
 fi
 

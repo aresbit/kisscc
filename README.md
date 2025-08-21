@@ -1,4 +1,4 @@
-# claunch 🧠🚀
+# kisscc 🧠🚀
 
 ![claunch](claunch-banner.png)
 
@@ -6,7 +6,7 @@
 
 > A lightweight session manager for efficiently managing kimicc across multiple projects
 
-`claunch` is a development support tool that separates Claude sessions by project with optional tmux support for persistent interaction.
+`kisscc` is a development support tool that separates Claude sessions by project with optional tmux support for persistent interaction.
 
 - 🧠 Claude session management per project (automatic resume)
 - ⚡ Lightweight direct execution by default
@@ -32,7 +32,7 @@ Or with wget:
 bash <(wget -qO- https://raw.githubusercontent.com/aresbit/kisscc/main/install.sh)
 ```
 
-> **Note**: This will install `claunch` to `$HOME/bin/claunch`. Make sure `$HOME/bin` is in your PATH.
+> **Note**: This will install `kisscc` to `$HOME/bin/kisscc`. Make sure `$HOME/bin` is in your PATH.
 
 ---
 
@@ -54,7 +54,7 @@ add all so to your .zshrc.
 
 ## ⚠️ Security Notice once more 
 
-`claunch` fork of kisscc
+`kisscc` fork of claunch
  do not runs Claude CLI with the `--dangerously-skip-permissions` flag.  dont care this:
 
 - **Claude will have full access to your file system** without asking for permissions
@@ -73,8 +73,8 @@ This flag is included for development convenience, allowing Claude to work effic
 Navigate to your project directory and run:
 
 ```bash
-claunch        # Start direct Claude session (default)
-claunch --tmux # Start with tmux for persistent sessions
+kisscc        # Start direct Claude session (default)
+kisscc --tmux # Start with tmux for persistent sessions
 ```
 
 On first run, it will:
@@ -97,7 +97,7 @@ echo "sess-xxxxxxxx" > ~/.claude_session_PROJECT_NAME
 
 ### 3. Resume an existing session
 
-Just run `claunch` (or `claunch --tmux`) again in the same project directory. It will automatically:
+Just run `kisscc` (or `kisscc --tmux`) again in the same project directory. It will automatically:
 - Detect the saved session ID
 - Resume your previous Claude conversation
 - Maintain all context from before
@@ -105,9 +105,9 @@ Just run `claunch` (or `claunch --tmux`) again in the same project directory. It
 ### 4. Additional Commands
 
 ```bash
-claunch list     # List all active sessions
-claunch clean    # Clean up orphaned session files
-claunch --help   # Show help and options
+kisscc list     # List all active sessions
+kisscc clean    # Clean up orphaned session files
+kisscc --help   # Show help and options
 ```
 
 ---
@@ -116,7 +116,7 @@ claunch --help   # Show help and options
 
 ### Auto tmux Installation (when using --tmux)
 
-`claunch` automatically detects and installs tmux if not present when using `--tmux` option:
+`kisscc` automatically detects and installs tmux if not present when using `--tmux` option:
 
 - **macOS**: Uses Homebrew (`brew install tmux`)
 - **Debian/Ubuntu**: Uses apt (`sudo apt install tmux`)
@@ -131,14 +131,14 @@ Each project gets its own:
 
 ### Persistent Sessions (tmux mode)
 
-With `claunch --tmux`:
+With `kisscc --tmux`:
 - Sessions survive terminal closures
 - Reconnect anytime with `claunch --tmux`
 - Multiple projects can run simultaneously in background
 
 ### tmux Operation Guide
 
-When running Claude through `claunch --tmux`, you're in a tmux session. Here are essential commands:
+When running Claude through `kisscc --tmux`, you're in a tmux session. Here are essential commands:
 
 - **Detach from session**: Press `Ctrl+B` then `D`
   - This leaves Claude running in the background
@@ -169,7 +169,7 @@ When running Claude through `claunch --tmux`, you're in a tmux session. Here are
 
 ## 🤔 FAQ
 
-### Why use claunch?
+### Why use kisscc?
 
 - **Project isolation**: Keep Claude conversations separate by project
 - **Session persistence**: Never lose your context when closing terminal
@@ -178,7 +178,7 @@ When running Claude through `claunch --tmux`, you're in a tmux session. Here are
 
 ### How do I switch between projects?
 
-Simply `cd` to a different project directory and run `claunch`. Each project maintains its own session.
+Simply `cd` to a different project directory and run `kisscc`. Each project maintains its own session.
 
 ### Where are session IDs stored?
 
